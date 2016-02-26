@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+if [ $# -ne 1 ]; then
+        echo "no parameter REPOS !!"
+	echo "example>> ./export 'REPOS'"
+        exit
+
+fi 
+
+
+REPOS=$1
+	cd /git/export/$REPOS
+#echo ">>>>> export $REPOS project"
+
+#echo ">> git checkout master" 
+	git checkout master >> /tmp/gitcmd.log
+
+#echo ">> git fetch origin master"
+	git fetch origin master >> /tmp/gitcmd.log 
+
+#echo ">> git reset --hard origin/master"
+	git reset --hard origin/master >> /tmp/gitcmd.log 
+
+#echo ">> make master reference rivision @export ,@tmp"
+	git log -1 > /git/export/$REPOS/.revision
+	git log -1 >> /tmp/git-$REPOS.log
+        echo "=================" >> /tmp/git-$REPOS.log
+	rm /tmp/gitcmd.log	
+
+	/home/gituser/deploy-all $REPOS
+

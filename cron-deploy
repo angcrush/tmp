@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#echo "======start======"
+#echo ">>>>> cron deploy"
+repos=( dogilike ddfw glitter )
+
+for i in ${repos[@]}; do
+        flag="/git/dirty/dirty-$i"
+#	echo ">>> check flag for $i"
+        if [  -f $flag ]; then
+#		echo ">> found flag "
+                rm $flag
+                
+		/home/gituser/export $i
+	fi
+#echo "run by cron $i" >> run.txt	
+done
+ 
+

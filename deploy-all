@@ -1,0 +1,61 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+        echo "no parameter REPOS !!"
+        echo "example>> ./deploy-all 'REPOS'" 
+        exit
+
+fi 
+
+REPOS=$1
+
+#echo ">>>>> Deploy All"
+date
+
+case "$REPOS" in
+        www2008)
+                #echo "Deploy www2008"
+                #host=( 48 66 172 178 195 198 201 202 204 205 207 209 191 192 211 212 213 )
+                #host=( 66 67 68 69 208 191 192 211 212 213 214 )
+                #host=( 221 )
+		PATH="/webroot/www/main/"
+                ;;
+        ddfw)
+                #echo "Deploy ddfw"
+                host=( 66 67 68 69 70 71 72 73 190 208 191 192 211 212 213 214 )
+		PATH="/webroot/ddfw/"
+                ;;
+        dogilike)
+                #echo "Deploy dogilike"
+                host=( 190 )
+                PATH="/webroot/www/dog/"
+                ;;
+        glitter)
+                #echo "Deploy glitter"
+                #host=( 212 214 )
+		PATH="/webroot/www/glitter/"
+                ;;
+        storage)
+                #echo "deploy storage"
+                ;;
+        myid2)
+                echo "Deploy myid2"
+                #host=( 178 179 196 197 199 200 203 206 208 218 )
+                #host=( 70 71 72 73 208 214 )
+                #host=( 221 )
+		PATH="/webroot/www2/my.id2/"
+                ;;
+
+        *)
+
+#                echo "usage : deploy-all repos"
+                exit 1
+
+esac 
+
+
+for i in ${host[@]}; do
+        echo ">> REPO:$REPOS PATH:$PATH HOST:192.168.100.$i"
+        /home/gituser/deploy-rsync 192.168.100.$i $REPOS $PATH 
+	done
+

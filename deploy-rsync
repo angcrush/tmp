@@ -1,0 +1,34 @@
+#!/bin/bash 
+
+if [ $# -ne 3 ]; then
+        echo "no parameter HOST REPOS PATH_DEPLOY !!"
+        echo "example>> ./deploy-rsync 'HOST' 'REPOS' 'PATH_DEPLOY'"
+        exit
+
+fi  
+
+#echo ">>>>> deploy-rsync"
+
+HOST=$1
+REPOS=$2
+PATH_DEPLOY=$3
+
+exclude=$REPOS'_exclude_list'        
+#echo ">>> check exclude $exclude"
+
+real_exclude="--exclude-from=/home/gituser/$exclude"
+
+if [ ! -f /home/gituser/$exclude ]; then
+    #echo ">>> No exclude file "
+	real_exclude=" "
+fi
+
+
+
+#echo ">> $real_exclude"
+/usr/bin/rsync -avz --delete $real_exclude --exclude '.git' /git/export/$REPOS/  -e "/usr/bin/ssh -p8022" gituser@${HOST}:${PATH_DEPLOY}
+
+
+
+echo ">> rsync finish <<"
+echo "=================="
